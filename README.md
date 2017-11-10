@@ -13,9 +13,11 @@ celery taske queue where it will be inserted to db.
 
 # Install
 
+```
 pip install celery
 pip install psycopg2
 pip install kiteconnect
+```
 
 # Create database and table
 
