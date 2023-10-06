@@ -6,38 +6,43 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,
 
 import time
 from db import insert_ticks
-from kiteconnect import WebSocket
+from kiteconnect import KiteTicker
 
 # Initialise.
-kws = WebSocket("api_key", "public_token", "zerodha_user_id")
+kws = KiteTicker("your_api_key", "your_access_token")
 
-# RELIANCE BSE, RELIANCE NSE, NIFTY 50, SENSEX
-tokens = [128083204, 73856, 256265, 265]
+# SBIN NSE, RELIANCE BSE, NIFTY 50, SENSEX
+tokens = [779521, 128083204, 256265, 265]
 
 
 # Callback for tick reception.
-def on_tick(ticks, ws):
+def on_tick(ws, ticks):
 	logging.info("on tick - {}".format(json.dumps(ticks)))
 	insert_ticks.delay(ticks)
 
 
 # Callback for successful connection.
-def on_connect(ws):
+def on_connect(ws, response):
 	logging.info("Successfully connected to WebSocket")
 
 
-def on_close():
+def on_close(ws, code, reason):
 	logging.info("WebSocket connection closed")
 
 
-def on_error():
-	logging.info("WebSocket connection thrown error")
+def on_error(ws, code, reason):
+	logging.info("Connection error: {code} - {reason}".format(code=code, reason=reason))
+
+# Callback when reconnect is on progress
+def on_reconnect(ws, attempts_count):
+    logging.info("Reconnecting: {}".format(attempts_count))
 
 # Assign the callbacks.
 kws.on_tick = on_tick
 kws.on_connect = on_connect
 kws.on_close = on_close
 kws.on_error = on_error
+kws.on_reconnect = on_reconnect
 
 # Infinite loop on the main thread. Nothing after this will run.
 # You have to use the pre-defined callbacks to manage subscriptions.
