@@ -27,7 +27,7 @@ Create a database called `ticks`
 CREATE DATABASE ticks;
 ```
 
-Create a table called `ticks` in `ticks` table
+Create a table called `ticks` in `ticks` database
 
 ```
 CREATE TABLE ticks (
