@@ -16,7 +16,7 @@ tokens = [779521, 128083204, 256265, 265]
 
 
 # Callback for tick reception.
-def on_tick(ws, ticks):
+def on_ticks(ws, ticks):
 	logging.info("on tick - {}".format(json.dumps(ticks)))
 	insert_ticks.delay(ticks)
 
@@ -38,7 +38,7 @@ def on_reconnect(ws, attempts_count):
     logging.info("Reconnecting: {}".format(attempts_count))
 
 # Assign the callbacks.
-kws.on_tick = on_tick
+kws.on_ticks = on_ticks
 kws.on_connect = on_connect
 kws.on_close = on_close
 kws.on_error = on_error
