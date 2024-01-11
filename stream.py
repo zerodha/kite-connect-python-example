@@ -38,7 +38,7 @@ def on_reconnect(ws, attempts_count):
     logging.info("Reconnecting: {}".format(attempts_count))
 
 # Assign the callbacks.
-kws.on_tick = on_tick
+kws.on_ticks = on_tick
 kws.on_connect = on_connect
 kws.on_close = on_close
 kws.on_error = on_error
